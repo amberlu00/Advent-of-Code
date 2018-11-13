@@ -1,9 +1,33 @@
+import re
+
 f = open("adventday7text.txt")
 
 prog = []
-for entry in f.readline().split("\n"):
-    prog.append(entry)
+for entry in f.readlines():
+    prog.append(entry.rstrip())
 
-print prog
+tower = dict()
+tower_val = dict()
 
+for p in prog:
+    temp = re.split("\s", p)
+    tower_val[temp[0]] = re.findall("\d+", p)[0]
+    tower[temp[0]] = re.findall("[a-zA-Z]+", p)[1:]
 
+# part 1
+root_finder = dict()
+for t in tower:
+    root_finder[t] = 0
+for t in tower:
+    for key in tower[t]:
+        root_finder[key] += 1
+
+root = ""  # for part 2
+
+for t in root_finder:
+    if root_finder[t] == 0:
+        root = root_finder[t]
+        print t
+        break
+
+# part 2
