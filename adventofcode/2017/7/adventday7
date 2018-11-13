@@ -1,0 +1,9 @@
+f = open("adventday7text.txt")
+
+prog = []
+for entry in f.readline().split("\n"):
+    prog.append(entry)
+
+print prog
+
+

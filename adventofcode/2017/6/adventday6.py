@@ -1,4 +1,3 @@
-import copy
 # (4074, 2793)
 
 f = open("adventday6text.txt")
