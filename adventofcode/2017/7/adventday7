@@ -1,6 +1,4 @@
-###
 import re
-from collections import deque
 
 f = open("adventday7text.txt")
 
