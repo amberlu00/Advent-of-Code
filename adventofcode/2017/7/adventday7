@@ -1,4 +1,6 @@
+###
 import re
+from collections import deque
 
 f = open("adventday7text.txt")
 
@@ -11,8 +13,9 @@ tower_val = dict()
 
 for p in prog:
     temp = re.split("\s", p)
-    tower_val[temp[0]] = re.findall("\d+", p)[0]
-    tower[temp[0]] = re.findall("[a-zA-Z]+", p)[1:]
+    tower_val[temp[0]] = int(re.findall("\d+", p)[0])
+    if re.search("->", p):
+        tower[temp[0]] = re.findall("[a-zA-Z]+", p)[1:]
 
 # part 1
 root_finder = dict()
@@ -20,14 +23,36 @@ for t in tower:
     root_finder[t] = 0
 for t in tower:
     for key in tower[t]:
-        root_finder[key] += 1
-
+        if key in root_finder:
+            root_finder[key] += 1
+        else:
+            root_finder[key] = 0
 root = ""  # for part 2
 
-for t in root_finder:
+for t in tower:
     if root_finder[t] == 0:
-        root = root_finder[t]
+        root = t
         print t
         break
 
-# part 2
+# part 2 -- super ugly dont look too hard
+def recursive_support(node):
+    leaves = tower[node]
+    support = []
+    for l in leaves:
+        if root_finder[l] > 0:
+            val = recursive_support(l)
+            s_val = sum(val) + tower_val[l]
+        else:
+            s_val = tower_val[l]
+        support.append(s_val)
+        if len(set(support)) != 1:
+            # print node, tower_val[node], support, tower[node]
+            for t in tower[node]:
+                print tower_val[t], t
+    return support
+
+
+recursive_support(root)
+
+
